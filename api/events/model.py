@@ -27,8 +27,8 @@ class CreateEvent(EventModel):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        if not self.name:
-            self.name = f"len({self.players} At {self.location})"
+        if not self.event_name:
+            self.event_name = f"len({self.players} At {self.location})"
 
 
 class GetEvent(EventModel):
@@ -66,18 +66,29 @@ class Event(Table):
     @classmethod
     async def prepare_stmt(cls):
         cls.__create_event = await DB.connection.prepare(
-            'INSERT INTO events ("type", stream_id, sport_id, location) VALUES ($1, $2, $3, $4) RETURNING id')
+            'INSERT INTO events ("type", stream_id, sport_id, location) VALUES ($1, $2, $3, $4) RETURNING id'
+        )
 
-        cls.__get_event = await DB.connection.prepare("SELECT e.id AS event_id, e.stream_id as stream_id, e.sport_id as sport_id, et.name AS event_type, e.name as event_name, e.location as location, e.date AS event_date, json_agg(json_build_object('player_id', p.id, 'name', p.name, 'country', p.country, 'dob', p.dob, 'sex', p.sex, 'height', p.height)) AS players FROM events e JOIN event_types et ON e.type = et.id LEFT JOIN players_in_event pie ON e.id = pie.event_id LEFT JOIN players p ON pie.player_id = p.id WHERE e.id = $1 GROUP BY e.id, et.name, e.stream_id, e.sport_id, e.name, e.location, e.date;")
+        cls.__get_event = await DB.connection.prepare(
+            "SELECT e.id AS event_id, e.stream_id as stream_id, e.sport_id as sport_id, et.name AS event_type, e.name as event_name, e.location as location, e.date AS event_date, json_agg(json_build_object('player_id', p.id, 'name', p.name, 'country', p.country, 'dob', p.dob, 'sex', p.sex, 'height', p.height)) AS players FROM events e JOIN event_types et ON e.type = et.id LEFT JOIN players_in_event pie ON e.id = pie.event_id LEFT JOIN players p ON pie.player_id = p.id WHERE e.id = $1 GROUP BY e.id, et.name, e.stream_id, e.sport_id, e.name, e.location, e.date;"
+        )
 
-        cls.__get_events = await DB.connection.prepare('SELECT e.id AS id, e.name AS event_name, e.sport_id AS sport_id, e.stream_id AS stream_id, e.date AS date, e.location AS location, et.name AS event_type FROM events e JOIN event_types et ON e.type = et.id;')
+        cls.__get_events = await DB.connection.prepare(
+            "SELECT e.id AS id, e.name AS event_name, e.sport_id AS sport_id, e.stream_id AS stream_id, e.date AS date, e.location AS location, et.name AS event_type FROM events e JOIN event_types et ON e.type = et.id;"
+        )
         cls.__get_event_types = await DB.connection.prepare("SELECT * from event_types")
-        cls.__create_pin = await DB.connection.prepare("INSERT into players_in_event (event_id, player_id) VALUES ($1, $2)")
+        cls.__create_pin = await DB.connection.prepare(
+            "INSERT into players_in_event (event_id, player_id) VALUES ($1, $2)"
+        )
 
     @classmethod
     async def create_event(cls, event: CreateEvent) -> UUID:
-        event_id = await cls.__create_event.fetchval(event.event_type, event.stream_id, event.sport_id, event.location)
-        await cls.__create_pin.executemany([(event_id, player) for player in event.players])
+        event_id = await cls.__create_event.fetchval(
+            event.event_type, event.stream_id, event.sport_id, event.location
+        )
+        await cls.__create_pin.executemany(
+            [(event_id, player) for player in event.players]
+        )
         return {"id": event_id}
 
     @classmethod
@@ -91,20 +102,38 @@ class Event(Table):
     @classmethod
     async def event_types(cls) -> List[EventType]:
         events = await cls.__get_event_types.fetch()
-        return [EventType(event_type_id=event["id"], event_name=event["name"]) for event in events]
+        return [
+            EventType(event_type_id=event["id"], event_name=event["name"])
+            for event in events
+        ]
 
     @classmethod
     def _get_event(cls, events) -> GetEvent:
-        return [GetEvent(event_id=event["event_id"], event_type=event["event_type"], event_name=event["event_name"],
-                         stream_id=event["stream_id"],
-                         sport_id=event["sport_id"],
-                         location=event["location"], date=event["event_date"],
-                         players=json.loads(event["players"]))
-                for event in events]
+        return [
+            GetEvent(
+                event_id=event["event_id"],
+                event_type=event["event_type"],
+                event_name=event["event_name"],
+                stream_id=event["stream_id"],
+                sport_id=event["sport_id"],
+                location=event["location"],
+                date=event["event_date"],
+                players=json.loads(event["players"]),
+            )
+            for event in events
+        ]
 
     @classmethod
     def _get_events(cls, events) -> List[_GetEvent]:
-        return [_GetEvent(event_id=event["id"], event_type=event["event_type"], event_name=event["event_name"],
-                          stream_id=event["stream_id"],
-                          sport_id=event["sport_id"],
-                          location=event["location"], date=event["date"]) for event in events]
+        return [
+            _GetEvent(
+                event_id=event["id"],
+                event_type=event["event_type"],
+                event_name=event["event_name"],
+                stream_id=event["stream_id"],
+                sport_id=event["sport_id"],
+                location=event["location"],
+                date=event["date"],
+            )
+            for event in events
+        ]

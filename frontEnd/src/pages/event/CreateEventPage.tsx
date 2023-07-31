@@ -7,6 +7,7 @@ import { ErrorPendingComp } from "src/components";
 import { countryNames, sportNames } from "src/data";
 import { useEffect, useState } from "react";
 import { primaryColor } from "src/util";
+import { useNavigate, useNavigation } from "react-router-dom";
 
 export function CreateEventPage() {
 
@@ -121,20 +122,12 @@ function StreamForm({ CB }: { CB: Function }) {
         bodyContent.append('privacy', privacy)
         bodyContent.append('video', video[0])
 
-        // fetchData({
-        //     path: `/stream`,
-        //     method: "POST",
-        //     noheaders: true,
-        //     body: bodyContent
-        // });
-        setIsPending(true);
-        setTimeout(() => {
-            setIsPending(false);
-            setData({
-                "stream_id": { "id": "e340bdd5-51f8-4e4f-98cf-b586d35bc44c" },
-                "video_id": "850213425"
-            })
-        }, 2000)
+        fetchData({
+            path: `/stream`,
+            method: "POST",
+            noheaders: true,
+            body: bodyContent
+        });
     }
 
     return (
@@ -231,7 +224,7 @@ export function EventForm({
     const { data, isPending, fetchData, error } = useFetch();
     const { data: dataP, isPending: isPendingP, fetchData: fD, error: errorS } = useFetch();
     console.log(uploadData);
-
+    const navigate = useNavigate()
 
     const { register, handleSubmit, formState: { errors }, watch, setValue } = useForm({
         defaultValues: {
@@ -252,6 +245,12 @@ export function EventForm({
             path: `/players/sport/${sportId}`
         })
     }, [sportId])
+
+    useEffect(() => {
+        if (!data || !data?.id) return;
+        navigate(`/event/${data.id}`)
+    }, [data])
+
 
     useEffect(() => {
         if (dataP) setUploadData({ ...uData, players: dataP })

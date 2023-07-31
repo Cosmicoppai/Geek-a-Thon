@@ -3,8 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { ErrorPendingComp } from "src/components";
 import { useFetch } from "src/hooks"
 import { timeHourMin } from "src/util/time";
-import { SentimentAnalysisComp } from "../analysis/SentimentAnalysisPage";
-import { StreamComments } from "src/components/StreamComments";
+
 import { StreamComp } from "src/components/StreamComp";
 
 export function EventStreamPage() {

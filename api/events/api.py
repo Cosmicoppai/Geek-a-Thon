@@ -6,7 +6,14 @@ from .model import CreateEvent, Event, GetEvent, _GetEvent
 from typing import List, Dict
 
 
-event_route = APIRouter(tags=["event", ], dependencies=[Depends(VerifyToken().verify), ])
+event_route = APIRouter(
+    tags=[
+        "event",
+    ],
+    dependencies=[
+        Depends(VerifyToken().verify),
+    ],
+)
 
 
 @event_route.get("/event/types")
@@ -20,7 +27,7 @@ async def get_events() -> List[_GetEvent]:
 
 
 @event_route.post("/event")
-async def add_event(event: CreateEvent) -> Dict[str, str]:
+async def add_event(event: CreateEvent) -> Dict[str, str | UUID]:
     return await Event.create_event(event)
 
 

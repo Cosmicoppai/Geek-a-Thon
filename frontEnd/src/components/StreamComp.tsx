@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+
 import { ErrorPendingComp } from "src/components";
 import { useFetch } from "src/hooks";
 import { StreamComments } from "./StreamComments";

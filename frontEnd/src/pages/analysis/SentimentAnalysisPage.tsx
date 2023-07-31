@@ -102,11 +102,11 @@ function SentimentResult({
         switch (data.sentiment) {
             case 'Positive':
                 setIconName('far fa-smile')
-                setIconColor('#FFD700');
+                setIconColor("#00cc00")
                 break;
             case 'Neutral':
                 setIconName('far fa-meh')
-                setIconColor('#808080')
+                setIconColor('#FFD700');
                 break;
             case 'Angry':
                 setIconName('far fa-angry')

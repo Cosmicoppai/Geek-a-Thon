@@ -55,10 +55,10 @@ export function SportsPage() {
                         }}
                     >
                         <h2 className="m-0">Sports</h2>
-                        <Link className="main-btn" to={'/create-sport'}>
+                        {/* <Link className="main-btn" to={'/create-sport'}>
                             <i className="fa-solid fa-plus me-2" />
                             <span>Create Sport</span>
-                        </Link>
+                        </Link> */}
                     </div>
                 </div>
             </div>

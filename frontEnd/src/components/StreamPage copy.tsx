@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { ErrorPendingComp } from "src/components";
 import { useFetch } from "src/hooks";
-import { SentimentAnalysisComp } from "../analysis/SentimentAnalysisPage";
+import { SentimentAnalysisComp } from "../pages/analysis/SentimentAnalysisPage";
 import { StreamComments } from "src/components/StreamComments";
 
 //Share - Start
