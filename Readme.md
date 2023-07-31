@@ -65,13 +65,15 @@ Throughout the development process, we achieved notable results:
 
 ## ScreenShots
 
-![Olympic Rings](./screenshots/img1.png)
-![Olympic Rings](./screenshots/img2.png)
-![Olympic Rings](./screenshots/img3.png)
-![Olympic Rings](./screenshots/img4.png)
-![Olympic Rings](./screenshots/img5.png)
-![Olympic Rings](./screenshots/img6.png)
+![Home Page](./screenshots/home-page.png)
+![Stats & Analysis Page](./screenshots/stats-analysis.png)
+![Olympic Rings](./screenshots/chart-1.png)
+![Olympic Rings](./screenshots/chart-5.png)
+![Olympic Rings](./screenshots/events.png)
+![Olympic Rings](./screenshots/stream.png)
+![Olympic Rings](./screenshots/chatbot.png)
 
+For more screenshots, [click here](./screenshots/).
 ## Run
 - Backend
 ```
