@@ -72,6 +72,18 @@ Throughout the development process, we achieved notable results:
 ![Olympic Rings](./screenshots/img5.png)
 ![Olympic Rings](./screenshots/img6.png)
 
+## Run
+- Backend
+```
+pip install -r ./requirements.txt
+py main.py
+```
+- Frontend
+```
+npm i
+npm start
+```
+
 
 ## Acknowledgments
 
