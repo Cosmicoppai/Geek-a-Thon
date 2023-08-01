@@ -62,6 +62,10 @@ Throughout the development process, we achieved notable results:
 
 - The sentiment analysis model using roBERTa achieved an overall accuracy of around 67%, an average f1 score of 0.635, an average recall score of 0.652, and an average precision score of 0.671.
 
+# Video
+
+https://github.com/Cosmicoppai/Geek-a-Thon/assets/63765823/46c827ba-fb7c-48e7-ad41-0028a891f90f
+
 
 ## ScreenShots
 
